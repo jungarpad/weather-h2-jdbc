@@ -25,7 +25,7 @@ public class WeatherController {
     }
 
     @GetMapping("/api/weather/{city}")
-    public SimpleWeatherResponse getLocalWeather(@PathVariable("city") String city){
+    public SimpleWeatherResponse getLocalWeather(@PathVariable("city") String city) {
         logger.warn("GET request received for city: " + city);
         return weatherService.getSimpleWeatherResponse(city);
     }
