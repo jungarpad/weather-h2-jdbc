@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class ConsumingRestApplication {
 
-    @Value("${apiKey}")
+    @Value("${apiKey:0}")
     private String apiKey;
 
     private static final Logger log = LoggerFactory.getLogger(ConsumingRestApplication.class);
@@ -26,14 +26,5 @@ public class ConsumingRestApplication {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
-    }
-
-    @Bean
-    public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
-        return args -> {
-            WeatherResponse weatherResponse = restTemplate.getForObject(
-                    "https://api.openweathermap.org/data/2.5/weather?q=Budapest,HU&appid=" + apiKey + "&units=metric&lang=hu", WeatherResponse.class);
-            log.info(weatherResponse.toString());
-        };
     }
 }
