@@ -5,9 +5,13 @@ import com.example.consumingrest.responsemodel.openweathermap.WeatherResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class WeatherService {
@@ -67,5 +71,11 @@ public class WeatherService {
     public SimpleWeatherResponse getSimpleWeatherResponse(String city) {
         logger.info("API called to {}", city);
         return callApi(city);
+    }
+
+    @Scheduled(fixedDelay = 60, timeUnit = TimeUnit.SECONDS)
+    @CacheEvict("weather")
+    public void clearCache() {
+        logger.info("Cache cleared");
     }
 }
